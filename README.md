@@ -170,14 +170,12 @@ SELECT * FROM archive_old_projects();
 
 ## 🔐 Security Implementation <a name="security"></a>
 
-### User Roles
-
-### Admin Role
--Full access to all tables
--Can create, update, or delete any data
+#### Admin Role
+--Full access to all tables
+--Can create, update, or delete any data
 -Can execute admin-only PostgreSQL functions
 
-### User Role
+#### User Role
 -Restricted to their own records only
 -Cannot view or alter other users’ projects/tasks
 -Cannot change their own role
@@ -186,36 +184,39 @@ SELECT * FROM archive_old_projects();
 
 All tables have RLS enabled with specific policies:
 
-### Profiles Table
+#### Profiles Table
 -✅ Users can view & update their own profile
 -✅ Admins can manage all users
 
-### Projects Table
+#### Projects Table
 -✅ Users can view/create/update/delete their own projects
 -✅ Admins have unrestricted access
 
-### Tasks Table
+#### Tasks Table
 -✅ Users can view/create/update/delete their own tasks
 -✅ Admins can access all tasks
 
-### Admin-Only Functions
+###  Admin-Only Functions
 
-1. delete_project(project_id UUID)
-Deletes any project (regardless of owner)
-Uses SECURITY DEFINER for safe elevated privilege
+1. **delete_project(project_id UUID)**
+-Deletes any project (regardless of owner)
+-Uses SECURITY DEFINER for safe elevated privilege
 
-2. get_user_statistics()
-Returns aggregated user and project stats — perfect for admin dashboards
+2. **get_user_statistics()**
+-Returns aggregated user and project stats — perfect for admin dashboards
 
-3. archive_old_projects()
+3. **archive_old_projects()**
 Automatically archives projects older than 90 days marked as completed
 
-👥 Authors <a name="authors"></a>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## 👥 Authors <a name="authors"></a>
 👤 **Cateshee** (TasteHub Project Owner)
 
 GitHub: @your-github-username
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 🔭 Future Features <a name="future-features"></a>
  Add audit logs for admin actions
 
