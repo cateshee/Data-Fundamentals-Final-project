@@ -94,6 +94,7 @@ You’ll need:
    ```bash
    git clone https://github.com/<your-username>/tastehub-library-management-system.git
    cd tastehub-library-management-system
+   ```
 ### Install
 1.**Run the Database Schema**
    - Open your Supabase project
@@ -121,7 +122,7 @@ You’ll need:
  #### For Admins
 -Users with role = 'admin' can view and manage all records
 -Can perform elevated tasks through secure SQL functions:
-```sql
+  ```sql
 -- Delete any project
 SELECT delete_project('project_uuid_here');
 
@@ -130,7 +131,7 @@ SELECT * FROM get_user_statistics();
 
 -- Archive old completed projects
 SELECT * FROM archive_old_projects();
-
+```
 ### Database Structure
 
 ### profiles Table
