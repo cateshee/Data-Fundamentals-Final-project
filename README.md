@@ -100,10 +100,12 @@ You’ll need:
    - Navigate to the SQL Editor
    - Copy the entire contents of `schema.sql`
    - Paste and execute the SQL commands
-2.** **Verify Table Creation**
+   - 
+2.**Verify Table Creation**
    - Go to Table Editor in Supabase
    -Verify creation of tables: profiles, projects, and tasks
    - Check that sample data is populated (5+ rows per table)
+
 3.**Enable Authentication**
 -Go to Authentication → Settings in Supabase
 -Enable Email/Password or Magic Link login
@@ -129,7 +131,7 @@ SELECT * FROM get_user_statistics();
 -- Archive old completed projects
 SELECT * FROM archive_old_projects();
 
-#### Database Structure
+### Database Structure
 
  ### Profiles Table
 Column	Type	Description
