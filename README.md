@@ -133,34 +133,40 @@ SELECT * FROM archive_old_projects();
 
 ### Database Structure
 
- ### Profiles Table
-Column	Type	Description
-id	UUID	Primary key (linked to auth.users)
-full_name	TEXT	User’s full name
-email	TEXT	Unique user email
-role	TEXT	admin or user
-created_at	TIMESTAMPTZ	Account creation timestamp
+### profiles Table
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key (auth reference) |
+| email | TEXT | User email (unique) |
+| full_name | TEXT | User's full name |
+| role | TEXT | 'admin' or 'user' |
+| created_at | TIMESTAMP | Creation timestamp |
 
-Projects Table
-Column	Type	Description
-id	UUID	Primary key
-owner_id	UUID	References profiles(id)
-title	TEXT	Project title
-description	TEXT	Description of the project
-status	TEXT	active, on hold, or completed
-created_at	TIMESTAMPTZ	Creation timestamp
+### Projects Table
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| user_id | UUID | Foreign key to users |
+| name | TEXT | Project name |
+| description | TEXT | Project description |
+| status | TEXT | 'active', 'completed', or 'archived' |
+| created_at | TIMESTAMP | Creation timestamp |
 
-Tasks Table
-Column	Type	Description
-id	UUID	Primary key
-project_id	UUID	References projects(id)
-owner_id	UUID	References profiles(id)
-assignee_id	UUID	References profiles(id)
-title	TEXT	Task title
-done	BOOLEAN	Task completion status
-created_at	TIMESTAMPTZ	Task creation date
+### Tasks Table
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| project_id | UUID | Foreign key to projects |
+| user_id | UUID | Foreign key to users |
+| title | TEXT | Task title |
+| description | TEXT | Task description |
+| priority | TEXT | 'low', 'medium', or 'high' |
+| completed | BOOLEAN | Completion status |
+| created_at | TIMESTAMP | Creation timestamp |
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## 🔐 Security Implementation <a name="security"></a>
 
 ### User Roles
