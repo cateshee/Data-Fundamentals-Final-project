@@ -1,210 +1,248 @@
-# Data-Fundamentals-Final-project
-
-# 📖 Data Fundamentals Final Project — Taste Hub
-
-This project is a secure database system for managing Taste Hub’s internal operations, built on Supabase (PostgreSQL). It demonstrates the use of Row Level Security (RLS) and Role-Based Access Control (RBAC) to protect user data and enforce least privilege principles.
-
-The project models a project and task management system where users can manage their own projects and tasks, while administrators have full visibility and control.
-
 # 📗 Table of Contents
 
-📖 About the Project
+- [📖 About the Project](#about-project)
+  - [🛠 Built With](#built-with)
+    - [Tech Stack](#tech-stack)
+    - [Key Features](#key-features)
+- [💻 Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Setup](#setup)
+  - [Install](#install)
+  - [Usage](#usage)
+  - [Database Structure](#database-structure)
+- [🔐 Security Implementation](#security)
+  - [User Roles](#user-roles)
+  - [Row Level Security Policies](#row-level-security-policies)
+  - [Admin-Only Functions](#admin-only-functions)
+- [👥 Authors](#authors)
+- [🔭 Future Features](#future-features)
+- [🤝 Contributing](#contributing)
+- [⭐️ Show your support](#support)
+- [🙏 Acknowledgements](#acknowledgements)
+- [❓ FAQ](#faq)
+- [📝 License](#license)
 
-🛠 Built With
+---
 
-💻 Getting Started
+# 📖 TasteHub Library Management System <a name="about-project"></a>
 
-📊 Database Structure
+**TasteHub Library Management System** is a database-driven project built on **Supabase (PostgreSQL)** that demonstrates secure role-based access, admin-only operations, and Row Level Security (RLS).  
+It showcases how to design and protect a modern data system with real-world access control and multi-user functionality.
 
-🔐 Security Implementation
+---
 
-👥 Authors
+## 🛠 Built With <a name="built-with"></a>
 
-🔭 Future Features
+### Tech Stack <a name="tech-stack"></a>
 
-🤝 Contributing
+<details>
+  <summary>Backend as a Service</summary>
+  <ul>
+    <li><a href="https://supabase.com/">Supabase</a></li>
+  </ul>
+</details>
 
-⭐️ Show your support
+<details>
+  <summary>Database</summary>
+  <ul>
+    <li><a href="https://www.postgresql.org/">PostgreSQL 15+</a></li>
+  </ul>
+</details>
 
-🙏 Acknowledgements
+<details>
+  <summary>Security</summary>
+  <ul>
+    <li>Row Level Security (RLS)</li>
+    <li>Role-Based Access Control (RBAC)</li>
+    <li>Supabase Auth</li>
+  </ul>
+</details>
 
-📝 License
+---
 
-📖 About the Project
+### Key Features <a name="key-features"></a>
 
-The Taste Hub Database Project is part of the Data Fundamentals final assignment, focusing on secure data design. It features:
+- 🔐 **Row Level Security (RLS)** — ensures users only access their own data  
+- 👥 **Role-Based Access Control** — Admin and Regular user roles  
+- 🧩 **Admin-Only Functions** — secure PostgreSQL functions for elevated tasks  
+- 🗃️ **Multi-Table Schema** — includes `profiles`, `projects`, and `tasks`  
+- 🛡️ **Least Privilege Principle** — follows best security practices  
 
-Multiple tables with relational links
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-Admin and regular user roles
+---
 
-Row Level Security (RLS) policies
+## 💻 Getting Started <a name="getting-started"></a>
 
-Admin-only functions for maintenance and reporting
+This project runs entirely on **Supabase**. Follow these steps to set it up.
 
-This setup represents a real-world implementation of secure, multi-user database systems.
+### Prerequisites
 
-🛠 Built With
-Tech Stack
+You’ll need:
+- A free [Supabase account](https://supabase.com/)
+- Basic SQL/PostgreSQL knowledge
+- Access to the **Supabase SQL Editor**
 
-Backend as a Service: Supabase
+### Setup
 
-Database: PostgreSQL
+1. **Create a Supabase Project**
+   - Go to [Supabase Dashboard](https://app.supabase.com/)
+   - Click “New Project” and enter project details
+   - Once created, open the SQL Editor
 
-Security: Row Level Security (RLS), Role-Based Access Control (RBAC)
+2. **Clone this repository (optional)**  
+   ```bash
+   git clone https://github.com/<your-username>/tastehub-library-management-system.git
+   cd tastehub-library-management-system
+### Install
+1.**Run the Database Schema**
+   - Open your Supabase project
+   - Navigate to the SQL Editor
+   - Copy the entire contents of `schema.sql`
+   - Paste and execute the SQL commands
+2.** **Verify Table Creation**
+   - Go to Table Editor in Supabase
+   -Verify creation of tables: profiles, projects, and tasks
+   - Check that sample data is populated (5+ rows per table)
+3.**Enable Authentication**
+-Go to Authentication → Settings in Supabase
+-Enable Email/Password or Magic Link login
+-Configure your app email templates if needed
 
-Key Features
+### Usage
 
-🔐 Row Level Security (RLS) – ensures users can only access their own records
+ ####  For Regular Users;
+-Register via Supabase Auth → role automatically set to 'user'
+-Can view, create, update, and delete their own projects and tasks
+-Cannot access or modify others’ data
 
-👥 Role-Based Access Control – separate permissions for admins and regular users
+ #### For Admins
+-Users with role = 'admin' can view and manage all records
+-Can perform elevated tasks through secure SQL functions:
+```sql
+-- Delete any project
+SELECT delete_project('project_uuid_here');
 
-🧩 Three-Table Structure – Profiles, Projects, and Tasks
-
-⚙️ Admin-Only SQL Functions – for system-level management
-
-🛡️ Least Privilege Principle – strict access enforcement at the row level
-
-💻 Getting Started
-
-This project runs on Supabase. Follow these steps to replicate it:
-
-Prerequisites
-
-A Supabase account (free plan works)
-
-Basic understanding of SQL and relational databases
-
-Setup
-
-Create a new project in Supabase
-
-Open the SQL Editor
-
-Copy and execute your schema file:
-
-Taste_Hub_Schema.sql
-
-
-Confirm that three tables are created:
-
-profiles
-
-projects
-
-tasks
-
-Usage
-
-Regular Users:
-
-Can only view, insert, and update their own projects/tasks
-
-Cannot modify or view others’ data
-
-Admins:
-
-Have full access across all tables
-
-Can execute special functions such as:
-
-SELECT delete_project('project_uuid');
+-- View usage stats
 SELECT * FROM get_user_statistics();
+
+-- Archive old completed projects
 SELECT * FROM archive_old_projects();
 
-📊 Database Structure
-Profiles Table
+#### Database Structure
+
+ ### Profiles Table
 Column	Type	Description
 id	UUID	Primary key (linked to auth.users)
-full_name	TEXT	User's full name
-email	TEXT	User email
-role	TEXT	'admin' or 'user'
-created_at	TIMESTAMPTZ	Record creation time
+full_name	TEXT	User’s full name
+email	TEXT	Unique user email
+role	TEXT	admin or user
+created_at	TIMESTAMPTZ	Account creation timestamp
+
 Projects Table
 Column	Type	Description
 id	UUID	Primary key
 owner_id	UUID	References profiles(id)
 title	TEXT	Project title
-description	TEXT	Project details
-status	TEXT	'active', 'on hold', or 'completed'
+description	TEXT	Description of the project
+status	TEXT	active, on hold, or completed
 created_at	TIMESTAMPTZ	Creation timestamp
+
 Tasks Table
 Column	Type	Description
 id	UUID	Primary key
 project_id	UUID	References projects(id)
-owner_id	UUID	Task creator
-assignee_id	UUID	Assigned user
+owner_id	UUID	References profiles(id)
+assignee_id	UUID	References profiles(id)
 title	TEXT	Task title
-done	BOOLEAN	Completion status
-created_at	TIMESTAMPTZ	Creation timestamp
-🔐 Security Implementation
-User Roles
+done	BOOLEAN	Task completion status
+created_at	TIMESTAMPTZ	Task creation date
 
-Admin:
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+## 🔐 Security Implementation <a name="security"></a>
 
-Full CRUD access to all tables
+### User Roles
 
-Can execute admin functions
+### Admin Role
+-Full access to all tables
+-Can create, update, or delete any data
+-Can execute admin-only PostgreSQL functions
 
-Can view all users’ data
+### User Role
+-Restricted to their own records only
+-Cannot view or alter other users’ projects/tasks
+-Cannot change their own role
 
-User:
+### Row Level Security (RLS) Policies
 
-Can only access rows they own
+All tables have RLS enabled with specific policies:
 
-Cannot elevate role
+### Profiles Table
+-✅ Users can view & update their own profile
+-✅ Admins can manage all users
 
-Restricted by RLS to their own data
+### Projects Table
+-✅ Users can view/create/update/delete their own projects
+-✅ Admins have unrestricted access
 
-Row Level Security Policies
+### Tasks Table
+-✅ Users can view/create/update/delete their own tasks
+-✅ Admins can access all tasks
 
-✅ RLS enabled on profiles, projects, and tasks
-✅ Users can view/modify their own data only
-✅ Admins have unrestricted access
-✅ Ownership enforced with auth.uid()
+### Admin-Only Functions
 
-Admin-Only Functions
+1. delete_project(project_id UUID)
+Deletes any project (regardless of owner)
+Uses SECURITY DEFINER for safe elevated privilege
 
-delete_project(project_id UUID) – removes any project
+2. get_user_statistics()
+Returns aggregated user and project stats — perfect for admin dashboards
 
-get_user_statistics() – summarizes user data
+3. archive_old_projects()
+Automatically archives projects older than 90 days marked as completed
 
-archive_old_projects() – archives completed projects older than 90 days
+👥 Authors <a name="authors"></a>
+👤 **Cateshee** (TasteHub Project Owner)
 
-👥 Authors
+GitHub: @your-github-username
 
-Cate (Taste Hub Project Developer)
-📧 [cate@example.com
-]
-GitHub: @yourGitHubUsername
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+🔭 Future Features <a name="future-features"></a>
+ Add audit logs for admin actions
 
-🔭 Future Features
+ Add 2FA for admins
 
-📜 Audit logs for admin actions
+ Build a web dashboard UI for managing data
 
-🔔 Email alerts for project updates
+ Enable email notifications for updates
 
-📈 Analytics dashboards
+🤝 Contributing <a name="contributing"></a>
+Contributions and suggestions are welcome!
+You can open an issue or pull request to propose improvements.
 
-🔑 Two-factor authentication for admins
+⭐️ Show your support <a name="support"></a>
+If this project helped you learn about database security, please star the repository 🌟
 
-🤝 Contributing
+🙏 Acknowledgements <a name="acknowledgements"></a>
+Supabase team for great documentation
 
-Contributions, issues, and feature requests are welcome!
-Check out the Issues section or submit a pull request.
+PostgreSQL community for its advanced RLS features
 
-⭐️ Show your support
+Data Fundamentals instructors for guidance
 
-If you learned something about Supabase and RLS, please ⭐️ the repo!
+❓ FAQ <a name="faq"></a>
+How do I make a user an admin?
 
-🙏 Acknowledgements
+sql
+Copy code
+UPDATE profiles SET role = 'admin' WHERE email = 'user@example.com';
+Why can’t users see others’ data?
+RLS ensures each user only accesses their own records — by design.
 
-Supabase documentation and community
+How can I test RLS policies?
+Login as different users and verify isolation of projects and tasks.
 
-PostgreSQL RLS reference
+📝 License <a name="license"></a>
+This project is licensed under the MIT License.
 
-Data Fundamentals course guidance
-
-📝 License
-
-This project is MIT Licensed.
+<p align="right">(<a href="#readme-top">back to top</a>)</p> ```
