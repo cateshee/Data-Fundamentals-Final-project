@@ -91,11 +91,13 @@ You’ll need:
    - Once created, open the SQL Editor
 
 2. **Clone this repository (optional)**  
-   ```bash
+   ```sh
    git clone https://github.com/<your-username>/tastehub-library-management-system.git
    cd tastehub-library-management-system
    ```
+   
 ### Install
+
 1.**Run the Database Schema**
    - Open your Supabase project
    - Navigate to the SQL Editor
@@ -112,14 +114,16 @@ You’ll need:
 -Enable Email/Password or Magic Link login
 -Configure your app email templates if needed
 
-### Usage
+ ### Usage
 
- ####  For Regular Users;
+ #### For Regular Users:
+
 -Register via Supabase Auth → role automatically set to 'user'
 -Can view, create, update, and delete their own projects and tasks
 -Cannot access or modify others’ data
 
- #### For Admins
+ #### For Admins:
+ 
 -Users with role = 'admin' can view and manage all records
 -Can perform elevated tasks through secure SQL functions:
   ```sql
