@@ -1,3 +1,9 @@
+# 📖 Data Fundamentals Final Project — Taste Hub
+
+This project is a secure database system for managing Taste Hub’s internal operations, built on Supabase (PostgreSQL). It demonstrates the use of Row Level Security (RLS)  to protect user data and enforce least privilege principles.
+
+The project models a project and task management system where users can manage their own projects and tasks, while administrators have full visibility and control.
+
 # 📗 Table of Contents
 
 - [📖 About the Project](#about-project)
