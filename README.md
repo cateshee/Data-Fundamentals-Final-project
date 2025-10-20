@@ -42,8 +42,7 @@ It showcases how to design and protect a modern data system with real-world acce
   </ul>
 </details>
 
-<details>
-  <summary>Database</summary>
+<details>  <summary>Database</summary>
   <ul>
     <li><a href="https://www.postgresql.org/">PostgreSQL 15+</a></li>
   </ul>
@@ -103,16 +102,17 @@ You’ll need:
    - Navigate to the SQL Editor
    - Copy the entire contents of `schema.sql`
    - Paste and execute the SQL commands
-   - 
+
 2.**Verify Table Creation**
    - Go to Table Editor in Supabase
-   -Verify creation of tables: profiles, projects, and tasks
+   - Verify creation of tables: profiles, projects, and tasks
    - Check that sample data is populated (5+ rows per table)
+    
+3. **Enable Authentication**
+   - Navigate to Authentication settings
+   - Enable Email/Password or Magic Link authentication
+   - Configure email templates as needed
 
-3.**Enable Authentication**
--Go to Authentication → Settings in Supabase
--Enable Email/Password or Magic Link login
--Configure your app email templates if needed
 
  ### Usage
 
