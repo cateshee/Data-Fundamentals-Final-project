@@ -117,7 +117,16 @@ You’ll need:
 - Can manage menu items and prices  
 - Can view and manage all orders and users  
 - Can perform admin-only SQL functions  
+```
+-- Delete any project
+SELECT delete_project('project_uuid_here');
 
+-- View usage stats
+SELECT * FROM get_user_statistics();
+
+-- Archive old completed projects
+SELECT * FROM archive_old_projects();
+```
 ---
 
 ## 🧱 Database Structure <a name="database-structure"></a>
@@ -178,19 +187,19 @@ You’ll need:
 
 ### Row Level Security Policies <a name="row-level-security-policies"></a>
 
-#### Users Table
+#### Users Table policies
 - Users can only view or edit their own profile  
 - Admins can view and manage all users  
 
-#### Orders Table
+#### Orders Table policies
 - Users can only view their own orders  
 - Admins can view and manage all orders  
 
-#### Order Items Table
+#### Order Items Table policies
 - Users can view order items related to their own orders  
 - Admins can access all records  
 
-#### Menu Items Table
+#### Menu Items Table policies
 - Admins can insert, update, or delete items  
 - Users can only view available items  
 
@@ -198,23 +207,24 @@ You’ll need:
 
 ### Admin-Only Functions <a name="admin-only-functions"></a>
 
-1. **delete_order(order_id UUID)**  
-   Deletes an order regardless of ownership.
+1. **delete_project(project_id UUID)**
+    Deletes any project (regardless of owner)
+    Uses SECURITY DEFINER for safe elevated privilege
 
-2. **update_menu_price(item_id UUID, new_price DECIMAL)**  
-   Updates the price of a menu item.
+2. **get_user_statistics()**
+   Returns aggregated user and project stats — perfect for admin dashboards
 
-3. **get_sales_summary()**  
-   Returns a summary of all completed orders for analytics.
-
+4. **archive_old_projects()**
+   Automatically archives projects older than 90 days marked as completed
 ---
 
 ## 👥 Authors <a name="authors"></a>
 
 👤 **Cate**  
-- GitHub: [@your-github-username](https://github.com/your-github-username)
+- GitHub: [@cateshee](https://github.com/cateshee)
 
 ---
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 🔭 Future Features <a name="future-features"></a>
 
@@ -250,5 +260,23 @@ If you found this project useful, please give it a ⭐️ to show support!
 **How do I make a user an admin?**
 ```sql
 UPDATE users SET role = 'admin' WHERE email = 'user@example.com';
+```
+**Why can't I see other users' data?**
+
+This is by design! Row Level Security ensures users can only access their own data. Only admin users can see all data.
+
+**How do I test the security policies?**
+
+Sign in as different users (admin and regular user) and try to access various data. Regular users should only see their own projects and tasks.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- LICENSE -->
+
+## 📝 License <a name="license"></a>
+
+This project is [MIT](./LICENSE) licensed.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
