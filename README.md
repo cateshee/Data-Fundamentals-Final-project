@@ -24,10 +24,12 @@
 
 ---
 
-# 📖 TasteHub Library Management System <a name="about-project"></a>
+# 📖 TasteHub Database System <a name="about-project"></a>
 
-**TasteHub Library Management System** is a database-driven project built on **Supabase (PostgreSQL)** that demonstrates secure role-based access, admin-only operations, and Row Level Security (RLS).  
-It showcases how to design and protect a modern data system with real-world access control and multi-user functionality.
+**TasteHub** is a restaurant management system built for the **Data Fundamentals** project.  
+It demonstrates how to design and secure a relational database using **Supabase (PostgreSQL)** with **Row Level Security (RLS)** and **Role-Based Access Control (RBAC)**.
+
+The project models restaurant operations — from managing menu items to customer orders — and enforces access control between **Admins** and **Regular Users**.
 
 ---
 
@@ -42,14 +44,15 @@ It showcases how to design and protect a modern data system with real-world acce
   </ul>
 </details>
 
-<details>  <summary>Database</summary>
+<details>
+<summary>Database</summary>
   <ul>
     <li><a href="https://www.postgresql.org/">PostgreSQL 15+</a></li>
   </ul>
 </details>
 
 <details>
-  <summary>Security</summary>
+<summary>Security</summary>
   <ul>
     <li>Row Level Security (RLS)</li>
     <li>Role-Based Access Control (RBAC)</li>
@@ -61,202 +64,191 @@ It showcases how to design and protect a modern data system with real-world acce
 
 ### Key Features <a name="key-features"></a>
 
-- 🔐 **Row Level Security (RLS)** — ensures users only access their own data  
-- 👥 **Role-Based Access Control** — Admin and Regular user roles  
-- 🧩 **Admin-Only Functions** — secure PostgreSQL functions for elevated tasks  
-- 🗃️ **Multi-Table Schema** — includes `profiles`, `projects`, and `tasks`  
-- 🛡️ **Least Privilege Principle** — follows best security practices  
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+- **🍽️ Menu Management:** Manage all available dishes, prices, and categories.  
+- **🧾 Order Tracking:** View and manage customer orders in real time.  
+- **👥 Role-Based Access:** Separate Admin and Regular User functionalities.  
+- **🔐 RLS Security:** Ensures data privacy and ownership across all tables.  
+- **📊 Clean Database Schema:** Organized relational structure with references.  
 
 ---
 
 ## 💻 Getting Started <a name="getting-started"></a>
 
-This project runs entirely on **Supabase**. Follow these steps to set it up.
-
 ### Prerequisites
 
 You’ll need:
-- A free [Supabase account](https://supabase.com/)
-- Basic SQL/PostgreSQL knowledge
-- Access to the **Supabase SQL Editor**
+
+- A [Supabase](https://supabase.com/) account (free tier available)  
+- Basic SQL knowledge  
+- Supabase SQL Editor or any PostgreSQL client  
+
+---
 
 ### Setup
 
-1. **Create a Supabase Project**
-   - Go to [Supabase Dashboard](https://app.supabase.com/)
-   - Click “New Project” and enter project details
-   - Once created, open the SQL Editor
+1. Go to [Supabase Dashboard](https://app.supabase.com/)  
+2. Click **“New Project”**  
+3. Fill in your project name (e.g., `TasteHub Database`)  
+4. Once created, go to **SQL Editor**  
 
-2. **Clone this repository (optional)**  
-   ```sh
-   git clone https://github.com/<your-username>/tastehub-library-management-system.git
-   cd tastehub-library-management-system
-   ```
-   
+---
+
 ### Install
 
-1.**Run the Database Schema**
-   - Open your Supabase project
-   - Navigate to the SQL Editor
-   - Copy the entire contents of `schema.sql`
-   - Paste and execute the SQL commands
+1. Copy and run your schema script in the SQL editor (tables, data, and RLS policies).  
+2. Verify that the following tables are created:  
+   - `users`  
+   - `menu_items`  
+   - `orders`  
+   - `order_items`  
+3. Add at least 5 rows of sample data per table.  
 
-2.**Verify Table Creation**
-   - Go to Table Editor in Supabase
-   - Verify creation of tables: profiles, projects, and tasks
-   - Check that sample data is populated (5+ rows per table)
-    
-3. **Enable Authentication**
-   - Navigate to Authentication settings
-   - Enable Email/Password or Magic Link authentication
-   - Configure email templates as needed
+---
 
+### Usage
 
- ### Usage
+#### For Regular Users:
+- Register via Supabase Auth  
+- Browse menu items  
+- Place and view their own orders  
+- Cannot modify or see other users’ orders  
 
- #### For Regular Users:
+#### For Admins:
+- Can manage menu items and prices  
+- Can view and manage all orders and users  
+- Can perform admin-only SQL functions  
 
--Register via Supabase Auth → role automatically set to 'user'
--Can view, create, update, and delete their own projects and tasks
--Cannot access or modify others’ data
+---
 
- #### For Admins:
- 
--Users with role = 'admin' can view and manage all records
--Can perform elevated tasks through secure SQL functions:
-  ```sql
--- Delete any project
-SELECT delete_project('project_uuid_here');
+## 🧱 Database Structure <a name="database-structure"></a>
 
--- View usage stats
-SELECT * FROM get_user_statistics();
-
--- Archive old completed projects
-SELECT * FROM archive_old_projects();
-```
-### Database Structure
-
-### profiles Table
+### Users Table
 | Column | Type | Description |
 |--------|------|-------------|
-| id | UUID | Primary key (auth reference) |
+| id | UUID | Primary key |
 | email | TEXT | User email (unique) |
-| full_name | TEXT | User's full name |
+| full_name | TEXT | User full name |
 | role | TEXT | 'admin' or 'user' |
-| created_at | TIMESTAMP | Creation timestamp |
+| created_at | TIMESTAMP | Record creation date |
 
-### Projects Table
+### Menu Items Table
 | Column | Type | Description |
 |--------|------|-------------|
 | id | UUID | Primary key |
-| user_id | UUID | Foreign key to users |
-| name | TEXT | Project name |
-| description | TEXT | Project description |
-| status | TEXT | 'active', 'completed', or 'archived' |
-| created_at | TIMESTAMP | Creation timestamp |
+| item_name | TEXT | Name of the dish |
+| category | TEXT | Category (e.g., Drinks, Main, Dessert) |
+| price | DECIMAL | Price of the menu item |
+| available | BOOLEAN | Whether item is available |
+| created_at | TIMESTAMP | Record creation date |
 
-### Tasks Table
+### Orders Table
 | Column | Type | Description |
 |--------|------|-------------|
 | id | UUID | Primary key |
-| project_id | UUID | Foreign key to projects |
-| user_id | UUID | Foreign key to users |
-| title | TEXT | Task title |
-| description | TEXT | Task description |
-| priority | TEXT | 'low', 'medium', or 'high' |
-| completed | BOOLEAN | Completion status |
-| created_at | TIMESTAMP | Creation timestamp |
+| user_id | UUID | Foreign key → users.id |
+| total_price | DECIMAL | Total amount of the order |
+| status | TEXT | 'pending', 'completed', or 'cancelled' |
+| order_date | TIMESTAMP | Date of the order |
 
+### Order Items Table
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| order_id | UUID | Foreign key → orders.id |
+| item_id | UUID | Foreign key → menu_items.id |
+| quantity | INTEGER | Number of items ordered |
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+---
 
 ## 🔐 Security Implementation <a name="security"></a>
 
+### User Roles <a name="user-roles"></a>
+
 #### Admin Role
---Full access to all tables
---Can create, update, or delete any data
--Can execute admin-only PostgreSQL functions
+- Full access to all tables  
+- Can view and edit all data  
+- Can manage users, orders, and menu items  
 
-#### User Role
--Restricted to their own records only
--Cannot view or alter other users’ projects/tasks
--Cannot change their own role
+#### Regular User Role
+- Can view available menu items  
+- Can only view and modify their own orders  
+- Cannot see or edit other users’ data  
 
-### Row Level Security (RLS) Policies
+---
 
-All tables have RLS enabled with specific policies:
+### Row Level Security Policies <a name="row-level-security-policies"></a>
 
-#### Profiles Table
--✅ Users can view & update their own profile
--✅ Admins can manage all users
+#### Users Table
+- Users can only view or edit their own profile  
+- Admins can view and manage all users  
 
-#### Projects Table
--✅ Users can view/create/update/delete their own projects
--✅ Admins have unrestricted access
+#### Orders Table
+- Users can only view their own orders  
+- Admins can view and manage all orders  
 
-#### Tasks Table
--✅ Users can view/create/update/delete their own tasks
--✅ Admins can access all tasks
+#### Order Items Table
+- Users can view order items related to their own orders  
+- Admins can access all records  
 
-###  Admin-Only Functions
+#### Menu Items Table
+- Admins can insert, update, or delete items  
+- Users can only view available items  
 
-1. **delete_project(project_id UUID)**
--Deletes any project (regardless of owner)
--Uses SECURITY DEFINER for safe elevated privilege
+---
 
-2. **get_user_statistics()**
--Returns aggregated user and project stats — perfect for admin dashboards
+### Admin-Only Functions <a name="admin-only-functions"></a>
 
-3. **archive_old_projects()**
-Automatically archives projects older than 90 days marked as completed
+1. **delete_order(order_id UUID)**  
+   Deletes an order regardless of ownership.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+2. **update_menu_price(item_id UUID, new_price DECIMAL)**  
+   Updates the price of a menu item.
+
+3. **get_sales_summary()**  
+   Returns a summary of all completed orders for analytics.
+
+---
 
 ## 👥 Authors <a name="authors"></a>
-👤 **Cateshee** (TasteHub Project Owner)
 
-GitHub: @your-github-username
+👤 **Cate**  
+- GitHub: [@your-github-username](https://github.com/your-github-username)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+---
 
-🔭 Future Features <a name="future-features"></a>
- Add audit logs for admin actions
+## 🔭 Future Features <a name="future-features"></a>
 
- Add 2FA for admins
+- [ ] Dashboard for order analytics  
+- [ ] Notification system for new orders  
+- [ ] Advanced filtering for menu categories  
+- [ ] Admin statistics reports  
 
- Build a web dashboard UI for managing data
+---
 
- Enable email notifications for updates
+## 🤝 Contributing <a name="contributing"></a>
 
-🤝 Contributing <a name="contributing"></a>
-Contributions and suggestions are welcome!
-You can open an issue or pull request to propose improvements.
+Contributions and feature requests are welcome!  
+Feel free to open a pull request or issue.
 
-⭐️ Show your support <a name="support"></a>
-If this project helped you learn about database security, please star the repository 🌟
+---
 
-🙏 Acknowledgements <a name="acknowledgements"></a>
-Supabase team for great documentation
+## ⭐️ Show your support <a name="support"></a>
 
-PostgreSQL community for its advanced RLS features
+If you found this project useful, please give it a ⭐️ to show support!
 
-Data Fundamentals instructors for guidance
+---
 
-❓ FAQ <a name="faq"></a>
-How do I make a user an admin?
+## 🙏 Acknowledgements <a name="acknowledgements"></a>
 
-sql
-Copy code
-UPDATE profiles SET role = 'admin' WHERE email = 'user@example.com';
-Why can’t users see others’ data?
-RLS ensures each user only accesses their own records — by design.
+- Thanks to the Supabase documentation and Data Fundamentals instructors.  
+- PostgreSQL community for security and RLS examples.  
 
-How can I test RLS policies?
-Login as different users and verify isolation of projects and tasks.
+---
 
-📝 License <a name="license"></a>
-This project is licensed under the MIT License.
+## ❓ FAQ <a name="faq"></a>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p> ```
+**How do I make a user an admin?**
+```sql
+UPDATE users SET role = 'admin' WHERE email = 'user@example.com';
+
+
