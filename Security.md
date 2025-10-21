@@ -36,7 +36,6 @@ RLS is **Enabled** on all main tables:
 - ✅ `orders` table  
 - ✅ `order_items` table
 
-  
 ---
 
 ##  Table Security Policies
@@ -148,9 +147,7 @@ SELECT * FROM get_sales_statistics();
 ```sql
 SELECT * FROM archive_old_orders();
 ```
-
 ---
-
 
 ## Least Privilege Principle
 
@@ -243,17 +240,17 @@ ON DELETE CASCADE on foreign keys maintains data consistency.
 ---
 ## Troubleshooting
 
-**Issue**: “permission denied for table orders”
--**Cause**: RLS enabled but policy missing
--**Fix**: Add policy for role or auth.uid().
+ **Issue**: “permission denied for table orders”
+- **Cause**: RLS enabled but policy missing
+- **Fix**: Add policy for role or auth.uid().
 
-**Issue**: Customers see other users’ orders
--**Cause**: Missing ownership filter
--**Fix**: Include WHERE user_id = auth.uid() in SELECT policy.
+ **Issue**: Customers see other users’ orders
+- **Cause**: Missing ownership filter
+- **Fix**: Include WHERE user_id = auth.uid() in SELECT policy.
 
-**Issue**: Admin access fails
--**Cause**: Role mismatch or missing admin policy
--**Fix**: Ensure role = 'admin' policies exist.
+ **Issue**: Admin access fails
+- **Cause**: Role mismatch or missing admin policy
+- **Fix**: Ensure role = 'admin' policies exist.
 
 ---
 ##  References
